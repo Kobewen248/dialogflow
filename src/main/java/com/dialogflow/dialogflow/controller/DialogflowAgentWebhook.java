@@ -20,23 +20,24 @@ public class DialogflowAgentWebhook{
 	@PostMapping(value="/webhook")
 	@ResponseBody
 	public WebhookResponse service(@RequestBody WebhookRequest webHookRequest) throws Exception {
-                System.out.println("request: " + new ObjectMapper().writeValueAsString(webHookRequest));
+                		System.out.println("request: " + new ObjectMapper().writeValueAsString(webHookRequest));
 		WebhookResponse webhookResponse = new WebhookResponse();
-//		for(String key : webHookRequest.getSessionInfo().getParameters().keySet()) {
-//			webHookRequest.getSessionInfo().getParameters().put(key,null);
-//		}
-		String targetFlow = webHookRequest.getFulfillmentInfo().getTag();
+		for(String key : webHookRequest.getSessionInfo().getParameters().keySet()) {
+			webHookRequest.getSessionInfo().getParameters().put(key,null);
+		}
+//		String targetFlow = webHookRequest.getFulfillmentInfo().getTag();
+		webHookRequest.getSessionInfo().setSession(sessionId);
 		webhookResponse.setSessionInfo(webHookRequest.getSessionInfo());
 		String currentPage = webHookRequest.getPageInfo().getCurrentPage();
 		int index = currentPage.lastIndexOf("/");
 		String str = currentPage.substring(index+1);
 		String endSession = currentPage.replace(str, "END_SESSION");
-		webhookResponse.setTargetPage(targetFlow);
+//		webhookResponse.setTargetPage(targetFlow);
 //		PageInfo pageInfo = new PageInfo();
 //		pageInfo.setCurrentPage(startPage);
 //		pageInfo.setDisplayName(displayName);
 //		webhookResponse.setPageInfo(pageInfo);
-//		webhookResponse.setTargetFlow(targetFlow);
+		webhookResponse.setTargetFlow(startflow);
 		System.out.println("response: " + new ObjectMapper().writeValueAsString(webhookResponse));
 		return webhookResponse;
 		
