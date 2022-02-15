@@ -31,10 +31,6 @@ public class DialogflowAgentWebhook{
 		String str = currentPage.substring(index+1);
 		String endSession = currentPage.replace(str, "END_SESSION");
 		webhookResponse.setTargetPage(endSession);
-		PageInfo pageInfo = new PageInfo();
-		pageInfo.setCurrentPage(startPage);
-		pageInfo.setDisplayName(displayName);
-		webhookResponse.setPageInfo(pageInfo);
 		System.out.println("response: " + new ObjectMapper().writeValueAsString(webhookResponse));
 		return webhookResponse;
 		
