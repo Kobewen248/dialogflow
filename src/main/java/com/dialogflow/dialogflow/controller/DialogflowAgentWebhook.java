@@ -23,7 +23,7 @@ public class DialogflowAgentWebhook{
 		System.out.println("request: " + new ObjectMapper().writeValueAsString(webHookRequest));
 		WebhookResponse webhookResponse = new WebhookResponse();
 		for(String key : webHookRequest.getSessionInfo().getParameters().keySet()) {
-			webHookRequest.getSessionInfo().getParameters().put(key,null);
+			webHookRequest.getSessionInfo().getParameters().put(key,"ocs");
 		}
 		webhookResponse.setSessionInfo(webHookRequest.getSessionInfo());
 		String currentPage = webHookRequest.getPageInfo().getCurrentPage();
