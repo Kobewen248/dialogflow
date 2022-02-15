@@ -2,9 +2,6 @@ package com.dialogflow.dialogflow.controller;
 
 import com.dialogflow.dialogflow.entity.WebhookRequest;
 import com.dialogflow.dialogflow.entity.WebhookResponse;
-import com.google.cloud.functions.HttpFunction;
-import com.google.cloud.functions.HttpRequest;
-import com.google.cloud.functions.HttpResponse;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.google.gson.JsonObject;
