@@ -15,8 +15,11 @@ import org.springframework.web.bind.annotation.ResponseBody;
 @RequestMapping("/dialogflow")
 public class DialogflowAgentWebhook{
 	
-	private String startPage = "projects/dolores-prod/locations/global/agents/a8ddc597-d9d4-408b-8895-60a19120c676/flows/00000000-0000-0000-0000-000000000000/pages/START_PAGE";
+        private String startPage = "projects/dolores-prod/locations/global/agents/a8ddc597-d9d4-408b-8895-60a19120c676/flows/00000000-0000-0000-0000-000000000000/pages/START_PAGE";
+	private String startflow = "projects/dolores-prod/locations/global/agents/a8ddc597-d9d4-408b-8895-60a19120c676/flows/00000000-0000-0000-0000-000000000000";
+
 	private String displayName = "Start Page";
+	private String sessionId = "projects/dolores-prod/locations/global/agents/a8ddc597-d9d4-408b-8895-60a19120c676/environments/draft/sessions/123";
 	@PostMapping(value="/webhook")
 	@ResponseBody
 	public WebhookResponse service(@RequestBody WebhookRequest webHookRequest) throws Exception {
