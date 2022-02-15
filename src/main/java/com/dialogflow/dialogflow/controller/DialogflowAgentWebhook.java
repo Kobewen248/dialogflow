@@ -22,15 +22,21 @@ public class DialogflowAgentWebhook{
 	public WebhookResponse service(@RequestBody WebhookRequest webHookRequest) throws Exception {
 		System.out.println("request: " + new ObjectMapper().writeValueAsString(webHookRequest));
 		WebhookResponse webhookResponse = new WebhookResponse();
-		for(String key : webHookRequest.getSessionInfo().getParameters().keySet()) {
-			webHookRequest.getSessionInfo().getParameters().put(key,"ocs");
-		}
+//		for(String key : webHookRequest.getSessionInfo().getParameters().keySet()) {
+//			webHookRequest.getSessionInfo().getParameters().put(key,null);
+//		}
+		String targetFlow = webHookRequest.getFulfillmentInfo().getTag();
 		webhookResponse.setSessionInfo(webHookRequest.getSessionInfo());
 		String currentPage = webHookRequest.getPageInfo().getCurrentPage();
 		int index = currentPage.lastIndexOf("/");
 		String str = currentPage.substring(index+1);
 		String endSession = currentPage.replace(str, "END_SESSION");
-		webhookResponse.setTargetPage(endSession);
+//		webhookResponse.setTargetPage(endSession);
+//		PageInfo pageInfo = new PageInfo();
+//		pageInfo.setCurrentPage(startPage);
+//		pageInfo.setDisplayName(displayName);
+//		webhookResponse.setPageInfo(pageInfo);
+		webhookResponse.setTargetFlow(targetFlow);
 		System.out.println("response: " + new ObjectMapper().writeValueAsString(webhookResponse));
 		return webhookResponse;
 		
