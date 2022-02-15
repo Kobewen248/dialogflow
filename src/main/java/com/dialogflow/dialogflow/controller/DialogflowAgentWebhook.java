@@ -25,9 +25,10 @@ public class DialogflowAgentWebhook{
 	public WebhookResponse service(@RequestBody WebhookRequest webHookRequest) throws Exception {
 		System.out.println("request: " + new ObjectMapper().writeValueAsString(webHookRequest));
 		WebhookResponse webhookResponse = new WebhookResponse();
-		webHookRequest.getSessionInfo().getParameters().put("isGuest", "true");
+		//webHookRequest.getSessionInfo().getParameters().put("isGuest", "true");
 		webHookRequest.getSessionInfo().getParameters().put("IntentName",null);
-		webHookRequest.getSessionInfo().getParameters().put("usecase_id","bot");
+		webHookRequest.getSessionInfo().getParameters().put("usecase_id",null);
+		webHookRequest.getSessionInfo().getParameters().put("usecase_id",null);
 		webhookResponse.setSessionInfo(webHookRequest.getSessionInfo());
 		System.out.println("response: " + new ObjectMapper().writeValueAsString(webhookResponse));
 		return webhookResponse;
