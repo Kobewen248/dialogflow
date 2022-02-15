@@ -14,21 +14,27 @@ import org.springframework.web.bind.annotation.ResponseBody;
 @Controller
 @RequestMapping("/dialogflow")
 public class DialogflowAgentWebhook{
-
+	
+	private String startPage = "projects/dolores-prod/locations/global/agents/a8ddc597-d9d4-408b-8895-60a19120c676/flows/00000000-0000-0000-0000-000000000000/pages/START_PAGE";
+	private String displayName = "Start Page";
 	@PostMapping(value="/webhook")
 	@ResponseBody
 	public WebhookResponse service(@RequestBody WebhookRequest webHookRequest) throws Exception {
 		System.out.println("request: " + new ObjectMapper().writeValueAsString(webHookRequest));
 		WebhookResponse webhookResponse = new WebhookResponse();
-		webHookRequest.getSessionInfo().getParameters().put("isGuest", "true");
-		webHookRequest.getSessionInfo().getParameters().put("IntentName",null);
-		webHookRequest.getSessionInfo().getParameters().put("usecase_id","bot");
+		for(String key : webHookRequest.getSessionInfo().getParameters().keySet()) {
+			webHookRequest.getSessionInfo().getParameters().put(key,null);
+		}
 		webhookResponse.setSessionInfo(webHookRequest.getSessionInfo());
 		String currentPage = webHookRequest.getPageInfo().getCurrentPage();
 		int index = currentPage.lastIndexOf("/");
 		String str = currentPage.substring(index+1);
 		String endSession = currentPage.replace(str, "END_SESSION");
 		webhookResponse.setTargetPage(endSession);
+		PageInfo pageInfo = new PageInfo();
+		pageInfo.setCurrentPage(startPage);
+		pageInfo.setDisplayName(displayName);
+		webhookResponse.setPageInfo(pageInfo);
 		System.out.println("response: " + new ObjectMapper().writeValueAsString(webhookResponse));
 		return webhookResponse;
 		
