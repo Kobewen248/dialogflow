@@ -2,6 +2,10 @@ package com.dialogflow.dialogflow.controller;
 
 import com.dialogflow.dialogflow.entity.WebhookRequest;
 import com.dialogflow.dialogflow.entity.WebhookResponse;
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.google.cloud.functions.HttpFunction;
+import com.google.cloud.functions.HttpRequest;
+import com.google.cloud.functions.HttpResponse;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.google.gson.JsonObject;
@@ -22,11 +26,13 @@ public class DialogflowAgentWebhook{
 	@PostMapping(value="/webhook")
 	@ResponseBody
 	public WebhookResponse service(@RequestBody WebhookRequest webHookRequest) throws Exception {
+		System.out.println("request: " + new ObjectMapper().writeValueAsString(webHookRequest));
 		WebhookResponse webhookResponse = new WebhookResponse();
 		webHookRequest.getSessionInfo().getParameters().put("isGuest", "true");
-		webHookRequest.getSessionInfo().getParameters().remove("IntentName");
+		webHookRequest.getSessionInfo().getParameters().put("IntentName",null);
 		webHookRequest.getSessionInfo().getParameters().put("usecase_id","bot");
 		webhookResponse.setSessionInfo(webHookRequest.getSessionInfo());
+		System.out.println("response: " + new ObjectMapper().writeValueAsString(webhookResponse));
 		return webhookResponse;
 		
 	}
