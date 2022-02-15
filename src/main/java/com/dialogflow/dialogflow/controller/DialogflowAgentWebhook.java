@@ -4,6 +4,9 @@ import com.dialogflow.dialogflow.entity.PageInfo;
 import com.dialogflow.dialogflow.entity.WebhookRequest;
 import com.dialogflow.dialogflow.entity.WebhookResponse;
 import com.fasterxml.jackson.databind.ObjectMapper;
+
+import java.util.UUID;
+
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -12,37 +15,41 @@ import org.springframework.web.bind.annotation.ResponseBody;
 
 
 @Controller
-@RequestMapping("/dialogflow")
+@RequestMapping
 public class DialogflowAgentWebhook{
 	
-        private String startPage = "projects/dolores-prod/locations/global/agents/a8ddc597-d9d4-408b-8895-60a19120c676/flows/00000000-0000-0000-0000-000000000000/pages/START_PAGE";
 	private String startflow = "projects/dolores-prod/locations/global/agents/a8ddc597-d9d4-408b-8895-60a19120c676/flows/00000000-0000-0000-0000-000000000000";
 
-	private String displayName = "Start Page";
-	private String sessionId = "projects/dolores-prod/locations/global/agents/a8ddc597-d9d4-408b-8895-60a19120c676/environments/draft/sessions/123";
-	@PostMapping(value="/webhook")
+	private String session = "projects/dolores-prod/locations/global/agents/a8ddc597-d9d4-408b-8895-60a19120c676/environments/draft/sessions/";
+	@PostMapping(value="/endConversation")
 	@ResponseBody
-	public WebhookResponse service(@RequestBody WebhookRequest webHookRequest) throws Exception {
-                		System.out.println("request: " + new ObjectMapper().writeValueAsString(webHookRequest));
+	public WebhookResponse endConversation(@RequestBody WebhookRequest webHookRequest) throws Exception {
+		System.out.println("request: " + new ObjectMapper().writeValueAsString(webHookRequest));
 		WebhookResponse webhookResponse = new WebhookResponse();
+		String sessionId = UUID.randomUUID().toString();
 		for(String key : webHookRequest.getSessionInfo().getParameters().keySet()) {
 			webHookRequest.getSessionInfo().getParameters().put(key,null);
 		}
-//		String targetFlow = webHookRequest.getFulfillmentInfo().getTag();
-		webHookRequest.getSessionInfo().setSession(sessionId);
+		webHookRequest.getSessionInfo().setSession(session+sessionId);
+		webhookResponse.setTargetFlow(startflow);
+		webhookResponse.setSessionInfo(webHookRequest.getSessionInfo());
+		System.out.println("response: " + new ObjectMapper().writeValueAsString(webhookResponse));
+		return webhookResponse;
+		
+	}
+	
+	@PostMapping(value="/addParameters")
+	@ResponseBody
+	public WebhookResponse addParameters(@RequestBody WebhookRequest webHookRequest) throws Exception {
+		System.out.println("request: " + new ObjectMapper().writeValueAsString(webHookRequest));
+		WebhookResponse webhookResponse = new WebhookResponse();
+		webHookRequest.getSessionInfo().getParameters().put("userName", "Ryan");
+		webHookRequest.getSessionInfo().getParameters().put("sessionId", "521776277617");
 		webhookResponse.setSessionInfo(webHookRequest.getSessionInfo());
 		String currentPage = webHookRequest.getPageInfo().getCurrentPage();
-		int index = currentPage.lastIndexOf("/");
-		String str = currentPage.substring(index+1);
-		String endSession = currentPage.replace(str, "END_SESSION");
-//		webhookResponse.setTargetPage(targetFlow);
-//		PageInfo pageInfo = new PageInfo();
-//		pageInfo.setCurrentPage(startPage);
-//		pageInfo.setDisplayName(displayName);
-//		webhookResponse.setPageInfo(pageInfo);
-		webhookResponse.setTargetFlow(startflow);
 		System.out.println("response: " + new ObjectMapper().writeValueAsString(webhookResponse));
 		return webhookResponse;
 		
 	}
 }
+
