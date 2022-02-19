@@ -79,6 +79,8 @@ public class DialogflowAgentWebhook{
 			webhookResponse.getFulfillmentResponse().getMessages().add(message);
 		}else if(rulePath != null && rulePath.equals("item_selected_rp")) {
             webHookRequest.getSessionInfo().getParameters().put("event", "inr_item_not_eligible");
+		}else if(rulePath != null && rulePath.equals("display_no_rp")) {
+            webHookRequest.getSessionInfo().getParameters().put("event", "default_dont_see_item_next_step");
 		}
 		webhookResponse.setSessionInfo(webHookRequest.getSessionInfo());		
 		return webhookResponse;
