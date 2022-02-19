@@ -1,5 +1,6 @@
 package com.dialogflow.dialogflow.entity;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
@@ -13,6 +14,9 @@ public class FulfillmentResponse {
 	private List<ResponseMessage> messages;
 
 	public List<ResponseMessage> getMessages() {
+		if(messages == null) {
+			messages = new ArrayList<ResponseMessage>();
+		}
 		return messages;
 	}
 
