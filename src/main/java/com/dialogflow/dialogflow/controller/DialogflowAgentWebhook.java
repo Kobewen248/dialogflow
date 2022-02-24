@@ -115,12 +115,6 @@ public class DialogflowAgentWebhook{
 			webhookResponse.getFulfillmentResponse().getMessages().add(message);
 		}else if(rulePath != null && rulePath.equals("checkMoreItems")) {
             webHookRequest.getSessionInfo().getParameters().put("state", "noItemsFound");
-            ArrayNode jsonArr = mapper.readValue(itemPicker, ArrayNode.class);
-			ObjectNode jsonObj = mapper.createObjectNode();
-			jsonObj.set("elements", jsonArr);
-			ResponseMessage message = new ResponseMessage();
-			message.setPayload(jsonObj);
-			webhookResponse.getFulfillmentResponse().getMessages().add(message);
 		}else if(rulePath != null && rulePath.equals("noItemsFound")) {
             ObjectNode jsonObj = mapper.readValue(noItems, ObjectNode.class);
 			ResponseMessage message = new ResponseMessage();
